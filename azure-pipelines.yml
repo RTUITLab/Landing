@@ -1,0 +1,42 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+name: $(BuildID)-$(Build.SourceBranchName)
+
+stages:
+- stage: build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+    - job: packProxy
+      displayName: Pack docker image
+      steps:
+        - task: Docker@2
+          displayName: buildAndPush
+          inputs:
+            containerRegistry: 'rtuitlab connection by admin'
+            repository: 'rtuitlab/landing-proxy'
+            command: 'buildAndPush'
+            Dockerfile: './Proxy/Dockerfile'
+            buildContext: './Proxy'
+            tags: |
+              $(Build.BuildId)
+              latest
+# - stage: deploy
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#   jobs:
+#     - deployment: DeployProxy
+#       displayName: Deploy proxy
+#       pool:
+#         vmImage: 'Ubuntu-16.04'
+#       environment: 'production'
+#       strategy:
+#         runOnce:
+#           deploy:
+#             steps:
+#               - download: none
+#               - task: SSH@0
+#                 inputs:
+#                   sshEndpoint: 'swarm manager'
+#                   runOptions: 'commands'
+#                   commands: 'docker service update --image rtuitlab/landing-proxy:$(Build.BuildId) landing_proxy'
+#                   readyTimeout: '20000'
