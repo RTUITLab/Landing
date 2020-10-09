@@ -16,3 +16,8 @@ services:
         options:
             max-size: "200k"
             max-file: "10"
+      networks:
+        - net
+
+networks:
+    net:
