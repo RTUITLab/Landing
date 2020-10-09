@@ -1,0 +1,6 @@
+[submodule "Landing-Front"]
+	path = Landing-Front
+	url = https://github.com/RTUITLab/Landing-Front.git
+[submodule "Landing-API"]
+	path = Landing-API
+	url = https://github.com/RTUITLab/Landing-API.git
