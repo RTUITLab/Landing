@@ -21,22 +21,20 @@ stages:
             tags: |
               $(Build.BuildId)
               latest
-# - stage: deploy
-#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-#   jobs:
-#     - deployment: DeployProxy
-#       displayName: Deploy proxy
-#       pool:
-#         vmImage: 'Ubuntu-16.04'
-#       environment: 'production'
-#       strategy:
-#         runOnce:
-#           deploy:
-#             steps:
-#               - download: none
-#               - task: SSH@0
-#                 inputs:
-#                   sshEndpoint: 'swarm manager'
-#                   runOptions: 'commands'
-#                   commands: 'docker service update --image rtuitlab/landing-proxy:$(Build.BuildId) landing_proxy'
-#                   readyTimeout: '20000'
+- stage: deploy
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+    - deployment: DeployProxy
+      displayName: Deploy proxy
+      environment: 'production'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: none
+              - task: SSH@0
+                inputs:
+                  sshEndpoint: 'swarm manager'
+                  runOptions: 'commands'
+                  commands: 'docker service update --image rtuitlab/landing-proxy:$(Build.BuildId) landing_proxy'
+                  readyTimeout: '20000'
