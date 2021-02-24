@@ -2,3 +2,4 @@
 stack.yml
 
 environment.ps1
+environment.dev.ps1
