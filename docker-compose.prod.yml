@@ -3,10 +3,16 @@ services:
   api:
     networks:
     - net
+  admin:
+    networks:
+    - net
   front:
     networks:
     - net
   proxy:
+    environment:
+      BASIC_AUTH_USERNAME: ${ADMIN_USERNAME?Provide admin password ADMIN_USERNAME}
+      BASIC_AUTH_PASSWORD: ${ADMIN_PASSWORD?Provide admin password ADMIN_PASSWORD}
     networks:
     - net
 

@@ -6,3 +6,6 @@ services:
       ports:
         - 5000:5000
       restart: on-failure
+      environment:
+        BASIC_AUTH_USERNAME: admin
+        BASIC_AUTH_PASSWORD: password
