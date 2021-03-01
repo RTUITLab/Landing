@@ -6,6 +6,9 @@ services:
   admin:
     networks:
     - net
+  preview:
+    networks:
+    - net
   front:
     networks:
     - net
@@ -15,6 +18,20 @@ services:
       BASIC_AUTH_PASSWORD: ${ADMIN_PASSWORD?Provide admin password ADMIN_PASSWORD}
     networks:
     - net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.10'
+          memory: 50M
+        reservations:
+          cpus: '0.05'
+          memory: 20M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
 
 
 networks:
